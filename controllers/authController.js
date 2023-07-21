@@ -56,11 +56,28 @@ exports.signup = async(req,res) =>{
         })
     }
 
+    req.userId={
+        _id:result.newEmployee._id
+    }
    return  res.status(201).json({
         status:"success",
         data:result
     })
 } 
+
+exports.protect = (req,res)=>{
+    
+    if(req.headers.authorization && req.headers.authorization.startsWith("Bearer")){
+        const token = req.headers.authorization.split(" ")[1]
+        
+        if(!token){
+            res.status(403).json({
+                status:"Failed",
+                message:"Please login to continue"
+            })
+        }
+    }
+}
 
 
 
