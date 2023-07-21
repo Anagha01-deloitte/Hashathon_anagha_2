@@ -1,11 +1,12 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
-const { ObjectId } = require("mongodb");
-
+const CompanySchema = require("./Company").schema;
+const bcrypt = require("bcryptjs")
 const employeeSchema= mongoose.Schema({
     userName:{
         type:String,
-        required:[true,"Please provide username"]
+        required:[true,"Please provide username"],
+        unique:true
     },
     email:{
         type:String,
@@ -19,12 +20,22 @@ const employeeSchema= mongoose.Schema({
         required:[true,"Please provide password"],
         minlength:8
     },
-    companyId:{
-        type: ObjectId,
-        required:[true,"Please provide company ID"],
+    company:{
+        type: CompanySchema,
+        required:[true,"Please provide company"],
 
     }
 })
+
+employeeSchema.pre("save",async function(next){
+    //hashing password
+    this.password = await bcrypt.hash(this.password,12)
+    next();
+})
+
+employeeSchema.methods.checkPassword= async function(candidatePassword, userPassword){
+    return await bcrypt.compare(candidatePassword,userPassword)
+}
 
 const Employee= mongoose.model("Employee",employeeSchema)
 

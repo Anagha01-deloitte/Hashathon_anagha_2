@@ -10,7 +10,7 @@ exports.getAllCompanies = async (req,res)=>{
 
 exports.createCompany = async (req,res)=>{
     await companyService.createCompanyService(req.body);
-    return res.status(200).json({
+    return res.status(201).json({
         status:"success",
         message:"Company created"
     })

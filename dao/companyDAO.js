@@ -25,5 +25,5 @@ exports.findCompany = async (params) =>{
 }
 
 exports.deleteCompany = async (params) =>{
-    await Company.findOneAndDelete(params);
+    return await Company.findOneAndDelete(params);
 }
