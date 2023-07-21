@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { ObjectId } = require("mongodb");
+const EmployeeSchema = require("./Employee").schema;
 
 const hackathonSchema= mongoose.Schema({
     name:{
@@ -9,7 +9,6 @@ const hackathonSchema= mongoose.Schema({
     startDate:{
         type:Date,
         required:[true,"Please provide start date"],
-        default: new Date(new Date().getDate() + 8) //one week's time for particpants to register (default behaviour)
     },
     endDate:{
         type:Date,
@@ -18,24 +17,14 @@ const hackathonSchema= mongoose.Schema({
     registrationStartDate:{
         type:Date,
         required:[true,"Please provide start date"],
-        default: new Date(new Date().getDate() + 1) //start tomorrow 
     },
     registrationEndDate:{
         type:Date,
         required:[true,"Please provide start date"],
     },
-    companyId:{
-        type: ObjectId,
-        required:[true,"Please provide company ID"],
-    },
-    organizerId:{
-        type: ObjectId,
-        required:[true,"Please provide organizer ID"],
-    },
-    status:{
-        type:String,
-        enum:["Active","Closed","Upcoming"],
-        default: "Upcoming"
+    organizer:{
+        type: EmployeeSchema,
+        required:[true,"Please provide organizer"],
     },
     maxSlots:{
         type:Number,
