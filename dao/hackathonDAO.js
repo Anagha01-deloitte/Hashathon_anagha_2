@@ -39,10 +39,14 @@ exports.getAllHackathons = async() =>{
                  hackathon= hackathon._doc
                 return {...hackathon,status:"Upcoming"}
             }
+            else if (hackathon.slotsRemaining<=0){
+                hackathon= {...hackathon}
+                 hackathon= hackathon._doc
+                return {...hackathon,status:"Closed"}
+            }
             else if(
                 (new Date(hackathon.registrationStartDate).toDateString() <= new Date().toDateString() 
-                && new Date(hackathon.registrationEndDate).toDateString() > new Date().toDateString())
-                && hackathon.slotsRemaining>0)
+                && new Date(hackathon.registrationEndDate).toDateString() > new Date().toDateString()))
             {   
                 hackathon= {...hackathon}
                  hackathon= hackathon._doc
@@ -65,15 +69,13 @@ exports.getAllHackathons = async() =>{
 exports.updateHackathon = async (params, body) =>{
 
     let hackathon = await Hackathon.find(params);
-
+    
     if(hackathon.length>0){
         hackathon = hackathon[0];
-    
-        if(new Date(hackathon.registrationStartDate).toDateString() <= new Date().toDateString()){
+        if(body.slotsRemaining!=0 && !(body.slotsRemaining) && new Date(hackathon.registrationStartDate).toDateString() <= new Date().toDateString()){
             return {error:"Hackathon cannot be edited once the registration starts"}
         }
-        const result = await Hackathon.findOneAndUpdate(params, body);
-        return result;
+        return await Hackathon.findOneAndUpdate(params, body);
     }
     else{
         return 
@@ -89,10 +91,14 @@ exports.getHackathon = async (params) =>{
          hackathon= hackathon._doc
         return {...hackathon,status:"Upcoming"}
     }
+    else if (hackathon.slotsRemaining<=0){
+        hackathon= {...hackathon}
+         hackathon= hackathon._doc
+        return {...hackathon,status:"Closed"}
+    }
     else if(
         (new Date(hackathon.registrationStartDate).toDateString() <= new Date().toDateString() 
-        && new Date(hackathon.registrationEndDate).toDateString() > new Date().toDateString())
-        && hackathon.slotsRemaining>0)
+        && new Date(hackathon.registrationEndDate).toDateString() > new Date().toDateString()))
     {   
         hackathon= {...hackathon}
          hackathon= hackathon._doc

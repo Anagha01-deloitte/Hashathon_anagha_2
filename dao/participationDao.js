@@ -3,7 +3,6 @@ const Hackathon = require("../models/Hackathon");
 const hackathonDao=require("./hackathonDAO")
 
 exports.createParticipation = async (body) =>{
-
     let {participant, hackathon, techStack, experienceLevel} = body;
 
     //check deadline
@@ -68,9 +67,10 @@ exports.createParticipation = async (body) =>{
     
 
     try {
-        await hackathonDao.updateHackathon({_id:hackathon._id},{slotsRemaining:hackathon.slotsRemaining-1})
+        const slotsRemaining=hackathon.slotsRemaining-1
+        await hackathonDao.updateHackathon({_id:hackathon._id},{slotsRemaining});
         return await Participation.create({
-            participant, hackathon, techStack, experienceLevel
+            participant, hackathon:{...hackathon,slotsRemaining}, techStack, experienceLevel
         })
 
     }catch(err){
