@@ -3,7 +3,16 @@ const hackathonService = require("../service/hackathonService");
 
 exports.getAllHackathons = async (req,res) =>{
 
-    const result = await hackathonService.getAllHackathonsService();
+    let result;
+
+    if(req.query){
+        result = await hackathonService.hackathonSearchService(req.query);
+    }
+    else{
+        result = await hackathonService.getAllHackathonsService();
+
+    }
+
 
     if(result.error){
         res.status(400).json({

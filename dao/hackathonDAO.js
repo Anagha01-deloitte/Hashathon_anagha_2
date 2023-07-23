@@ -114,3 +114,14 @@ exports.getHackathon = async (params) =>{
 exports.deleteHackathon = async (params) =>{
     return await Hackathon.findOneAndDelete(params);
 }
+
+exports.hackathonSearch= async (query) =>{
+
+    try {
+        return await Hackathon.find(query);
+
+    }catch(err){
+        console.log(err);
+        return err
+    }
+}

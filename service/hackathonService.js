@@ -20,3 +20,7 @@ exports.getHackathonService = async (params) =>{
 exports.deleteHackathonService = async (params) =>{
    return await hackathonDao.deleteHackathon(params);
 }
+
+exports.hackathonSearchService = async(query)=>{
+   return await hackathonDao.hackathonSearch(query);
+}
