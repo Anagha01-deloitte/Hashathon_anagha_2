@@ -16,7 +16,16 @@ exports.getEmployee = async(req,res)=>{
 }
 
 exports.getEmployees=async(req,res)=>{
-    const data = await employeeService.getAllEmployeeService();
+
+    let data;
+    if(req.query){
+        data = await employeeService.employeePaginationService(req.query)
+    }
+    else{
+        data = await employeeService.getAllEmployeeService();
+
+    }
+
     return res.status(200).json({
         status:"success",
         result:data
