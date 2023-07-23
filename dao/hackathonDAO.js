@@ -7,6 +7,8 @@ exports.createHackathon = async (body) =>{
     let {name, startDate, endDate, registrationStartDate, registrationEndDate,
     organizerId, maxSlots, description, techStack, experienceLevel} = body;
 
+    const slotsRemaining= maxSlots;
+
     startDate = moment(new Date(startDate)).add(1,"days");
     endDate =moment(new Date(endDate)).add(1,"days");
     registrationStartDate = moment(new Date(registrationStartDate)).add(1,"days");
@@ -17,7 +19,7 @@ exports.createHackathon = async (body) =>{
     try {
         return  await Hackathon.create({
             name, startDate, endDate, registrationStartDate, registrationEndDate,
-            organizer, maxSlots, description, techStack, experienceLevel
+            organizer, maxSlots, slotsRemaining, description, techStack, experienceLevel
         });
     }catch(err){
         console.log(err);
@@ -31,13 +33,16 @@ exports.getAllHackathons = async() =>{
         let  hackathons = await Hackathon.find();
 
          const hackathonsStatus = hackathons.map((hackathon)=>{
-            if (hackathon.registrationStartDate > new Date())
+            if (new Date(hackathon.registrationStartDate).toDateString() > new Date().toDateString())
             {   
                  hackathon= {...hackathon}
                  hackathon= hackathon._doc
                 return {...hackathon,status:"Upcoming"}
             }
-            else if(hackathon.registrationStartDate <= new Date() && hackathon.registrationEndDate> new Date())
+            else if(
+                (new Date(hackathon.registrationStartDate).toDateString() <= new Date().toDateString() 
+                && new Date(hackathon.registrationEndDate).toDateString() > new Date().toDateString())
+                && hackathon.slotsRemaining>0)
             {   
                 hackathon= {...hackathon}
                  hackathon= hackathon._doc
@@ -46,12 +51,10 @@ exports.getAllHackathons = async() =>{
             else{
                 hackathon= {...hackathon}
                  hackathon= hackathon._doc
-                return {...hackathon,status:"Past"}
+                return {...hackathon,status:"Closed"}
             }
         })
-
         return hackathonsStatus;
-        
 
     }catch(err){
         console.log(err)
@@ -66,27 +69,30 @@ exports.updateHackathon = async (params, body) =>{
     if(hackathon.length>0){
         hackathon = hackathon[0];
     
-        if(hackathon.registrationStartDate <= new Date()){
+        if(new Date(hackathon.registrationStartDate).toDateString() <= new Date().toDateString()){
             return {error:"Hackathon cannot be edited once the registration starts"}
         }
-        const result = await Hackathon.findOneAndUpdate(params, body,{new:true});
+        const result = await Hackathon.findOneAndUpdate(params, body);
         return result;
     }
     else{
-        return null
+        return 
     }
 
 }
 
 exports.getHackathon = async (params) =>{
     let hackathon = await Hackathon.findOne(params);
-    if (hackathon.registrationStartDate > new Date())
+    if (new Date(hackathon.registrationStartDate).toDateString() > new Date().toDateString())
     {   
          hackathon= {...hackathon}
          hackathon= hackathon._doc
         return {...hackathon,status:"Upcoming"}
     }
-    else if(hackathon.registrationStartDate < new Date() && hackathon.registrationEndDate> new Date())
+    else if(
+        (new Date(hackathon.registrationStartDate).toDateString() <= new Date().toDateString() 
+        && new Date(hackathon.registrationEndDate).toDateString() > new Date().toDateString())
+        && hackathon.slotsRemaining>0)
     {   
         hackathon= {...hackathon}
          hackathon= hackathon._doc
@@ -95,7 +101,7 @@ exports.getHackathon = async (params) =>{
     else{
         hackathon= {...hackathon}
          hackathon= hackathon._doc
-        return {...hackathon,status:"Past"}
+        return {...hackathon,status:"Closed"}
     }
 }
 

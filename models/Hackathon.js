@@ -30,6 +30,11 @@ const hackathonSchema= mongoose.Schema({
         type:Number,
         required:[true,"Please provide maximum number of slots"],
     },
+    slotsRemaining:{
+        type:Number,
+        default:this.maxSlots,
+        required:[ true, "Please provide remaining slots"]
+    },
     description:{
         type: String,
         required:[ true, "Please provide description"]

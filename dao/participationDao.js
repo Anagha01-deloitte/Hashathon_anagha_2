@@ -1,18 +1,19 @@
 const Participation = require("../models/Participation");
 const Hackathon = require("../models/Hackathon");
+const hackathonDao=require("./hackathonDAO")
 
 exports.createParticipation = async (body) =>{
 
     let {participant, hackathon, techStack, experienceLevel} = body;
 
     //check deadline
-    if(hackathon.registrationEndDate < new Date()){
+    if(new Date(hackathon.registrationEndDate).toDateString()< new Date().toDateString()){
         return {error:"Registraton date has passed"}
     }
 
     //check if registration has started
-    if(hackathon.registrationStartDate > new Date()){
-        return {error:`Registration are going to be starting on ${hackathon.registrationStartDate}`,}
+    if(new Date(hackathon.registrationStartDate).toDateString() > new Date().toDateString()){
+        return {error:`Registrations are going to be starting on ${hackathon.registrationStartDate}`,}
     }
 
     //check if skills match
@@ -67,6 +68,7 @@ exports.createParticipation = async (body) =>{
     
 
     try {
+        await hackathonDao.updateHackathon({_id:hackathon._id},{slotsRemaining:hackathon.slotsRemaining-1})
         return await Participation.create({
             participant, hackathon, techStack, experienceLevel
         })
