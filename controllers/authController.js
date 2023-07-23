@@ -6,14 +6,14 @@ exports.login = async(req,res)=>{
 
     //check if user has entered the fields
     if(!userName){
-        res.status(400).json({
+        return res.status(400).json({
             status:"Failed",
             message:"Please enter user name"
         })
     }
 
     if(!password){
-        res.status(400).json({
+        return res.status(400).json({
             status:"Failed",
             message:"Please enter password"
         })
@@ -25,7 +25,7 @@ exports.login = async(req,res)=>{
     
     if(!employee && !await employee.checkPassword(password, passwordStored)){
         
-        res.status(400).json({
+        return res.status(400).json({
             status:"Failed",
             message:"Bad credentials"
         })
@@ -64,22 +64,6 @@ exports.signup = async(req,res) =>{
         data:result
     })
 } 
-
-exports.protect = (req,res)=>{
-    
-    if(req.headers.authorization && req.headers.authorization.startsWith("Bearer")){
-        const token = req.headers.authorization.split(" ")[1]
-        
-        if(!token){
-            res.status(403).json({
-                status:"Failed",
-                message:"Please login to continue"
-            })
-        }
-    }
-}
-
-
 
 
 
