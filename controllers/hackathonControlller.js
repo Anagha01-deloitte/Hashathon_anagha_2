@@ -40,10 +40,18 @@ exports.createHackathon = async (req,res) =>{
 
 exports.updateHackathon = async (req,res) =>{
     const result = await hackathonService.updateHackathonService(req.params, req.body);
+
     if(!result){
         return res.status(404).json({
             status:"Failed",
             message: "Hackathon with that ID doesn't exist"
+        })
+    }
+
+    if(result.error){
+        return res.status(404).json({
+            status:"Failed",
+            message: result.error
         })
     }
     return res.status(200).json({

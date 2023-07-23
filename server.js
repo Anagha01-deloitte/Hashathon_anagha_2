@@ -15,4 +15,6 @@ mongoose.connect(DB).then((con)=>{
 //start the server
 app.listen(process.env.PORT,()=>{
     console.log("App running on port ", process.env.PORT);
+    console.log("Waiting for database connection establishment...")
 })
+

@@ -60,8 +60,22 @@ exports.getAllHackathons = async() =>{
 }
 
 exports.updateHackathon = async (params, body) =>{
-    const result = await Hackathon.findOneAndUpdate(params, body,{new:true});
-    return result;
+
+    let hackathon = await Hackathon.find(params);
+
+    if(hackathon.length>0){
+        hackathon = hackathon[0];
+    
+        if(hackathon.registrationStartDate <= new Date()){
+            return {error:"Hackathon cannot be edited once the registration starts"}
+        }
+        const result = await Hackathon.findOneAndUpdate(params, body,{new:true});
+        return result;
+    }
+    else{
+        return null
+    }
+
 }
 
 exports.getHackathon = async (params) =>{
