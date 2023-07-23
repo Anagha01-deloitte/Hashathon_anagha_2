@@ -27,7 +27,30 @@ exports.createHackathon = async (body) =>{
 
 exports.getAllHackathons = async() =>{
     try {
-        return await Hackathon.find();
+        let  hackathons = await Hackathon.find();
+
+         const hackathonsStatus = hackathons.map((hackathon)=>{
+            if (hackathon.registrationStartDate > new Date())
+            {   
+                 hackathon= {...hackathon}
+                 hackathon= hackathon._doc
+                return {...hackathon,status:"Upcoming"}
+            }
+            else if(hackathon.registrationStartDate < new Date() && hackathon.registrationEndDate> new Date())
+            {   
+                hackathon= {...hackathon}
+                 hackathon= hackathon._doc
+                return {...hackathon,status:"Active"}
+            }
+            else{
+                hackathon= {...hackathon}
+                 hackathon= hackathon._doc
+                return {...hackathon,status:"Past"}
+            }
+        })
+
+        return hackathonsStatus;
+        
 
     }catch(err){
         return {error:err};
@@ -40,8 +63,24 @@ exports.updateHackathon = async (params, body) =>{
 }
 
 exports.getHackathon = async (params) =>{
-    const result = await Hackathon.findOne(params);
-    return result;
+    let hackathon = await Hackathon.findOne(params);
+    if (hackathon.registrationStartDate > new Date())
+    {   
+         hackathon= {...hackathon}
+         hackathon= hackathon._doc
+        return {...hackathon,status:"Upcoming"}
+    }
+    else if(hackathon.registrationStartDate < new Date() && hackathon.registrationEndDate> new Date())
+    {   
+        hackathon= {...hackathon}
+         hackathon= hackathon._doc
+        return {...hackathon,status:"Active"}
+    }
+    else{
+        hackathon= {...hackathon}
+         hackathon= hackathon._doc
+        return {...hackathon,status:"Past"}
+    }
 }
 
 exports.deleteHackathon = async (params) =>{
