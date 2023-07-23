@@ -9,10 +9,8 @@ router
     .post(participationController.createParticipation);
 
     router
-    // .route("/:_id")
-    // .get(hackathonController.getHackathon)
-    // .patch(hackathonController.updateHackathon)
-    // .delete(hackathonController.deleteHackathon)
-
+    .route("/hackathon/:hackathonId")
+    .get(participationController.getParticipantsOfHackathon)
+   
 
 module.exports=router;

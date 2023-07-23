@@ -26,3 +26,7 @@ exports.createParticipationService = async (body) => {
 exports.getAllParticipantsService = async () =>{
     return await participationDao.getAllParticipations();
 }
+
+exports.getParticipantsOfHackathonService = async(params) =>{
+    return await participationDao.getParticipantsOfHackathon(params)
+}

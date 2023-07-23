@@ -3,7 +3,7 @@ const Participation = require("../models/Participation");
 exports.createParticipation = async (body) =>{
 
     let {participant, hackathon, techStack, experienceLevel} = body;
-    
+
     //check deadline
     if(hackathon.registrationEndDate < new Date()){
         return {error:"Registraton date has passed"}
@@ -74,6 +74,21 @@ exports.createParticipation = async (body) =>{
 exports.getAllParticipations = async () =>{
     try {
         return await Participation.find();
+
+    }catch(err){
+        return {error:err};
+    }
+}
+
+exports.getParticipantsOfHackathon = async (params) =>{
+    try {
+        const participations = await Participation.find({"hackathon._id":params.hackathonId});
+
+        const participants = participations.map((participation)=>{
+            return participation.participant;
+        })
+
+        return {totalParticipants: participants.length,participants};
 
     }catch(err){
         return {error:err};
