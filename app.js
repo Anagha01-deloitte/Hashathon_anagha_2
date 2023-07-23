@@ -5,6 +5,8 @@ const companyRouter= require("./routes/companyRouter");
 const authRouter= require("./routes/authRouter");
 const employeeRouter= require("./routes/employeeRouter");
 const hackathonRouter = require("./routes/hackathonRouter");
+const participationRouter = require("./routes/participationRouter");
+
 
 
 app.use(express.json());
@@ -15,6 +17,8 @@ app.use("/api/v1/company",companyRouter);
 app.use("/api/v1/auth",authRouter);
 app.use("/api/v1/employee",employeeRouter);
 app.use("/api/v1/hackathon",hackathonRouter);
+app.use("/api/v1/participation",participationRouter);
+
 
 
 

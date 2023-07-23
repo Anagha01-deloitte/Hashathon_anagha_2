@@ -6,12 +6,10 @@ const employeeSchema= mongoose.Schema({
     userName:{
         type:String,
         required:[true,"Please provide username"],
-        unique:true
     },
     email:{
         type:String,
         required:[true,"Please provide email"],
-        unqiue: true,
         lowercase: true,
         validate:[ validator.isEmail,"Please provide valid email"]
     },

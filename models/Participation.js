@@ -1,24 +1,21 @@
 const mongoose = require("mongoose");
-const { ObjectId } = require("mongodb");
+const EmployeeSchema = require("./Employee").schema;
+const HackathonSchema = require("./Hackathon").schema;
+
 
 const participationSchema= mongoose.Schema({
     registrationDate:{
         type:Date,
         required:[true,"Please provide start date"],
-        default: new Date() //start tomorrow 
+        default: new Date()
     },
-    emolpyeeId:{
-        type: ObjectId,
-        required:[true,"Please provide employee ID"],
+    participant:{
+        type: EmployeeSchema,
+        required:[true,"Please provide employee"],
     },
-    hackathonId:{
-        type: ObjectId,
-        required:[true,"Please provide hackathon ID"],
-    },
-    status:{
-        type:String,
-        enum:["Active","Closed","Upcoming"],
-        default: "Upcoming"
+    hackathon:{
+        type: HackathonSchema,
+        required:[true,"Please provide hackathon"],
     },
     techStack:{
         type:String,
@@ -31,5 +28,5 @@ const participationSchema= mongoose.Schema({
     }
 })
 
-const Participation= mongoose.model("Hackathon",participationSchema)
+const Participation= mongoose.model("Participation",participationSchema)
 module.exports= Participation;
