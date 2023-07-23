@@ -34,3 +34,7 @@ exports.getParticipantsOfHackathonService = async(params) =>{
 exports.getHackathonsOfEmployeeService = async (params) =>{
     return await participationDao.getHackathonsOfEmployee(params)
 }
+
+exports.getHackathonsOfOrganizerService = async (params) =>{
+    return await participationDao.getHackathonsOfOrganizer(params)
+}

@@ -15,6 +15,9 @@ router
     router
     .route("/employee/:employeeId")
     .get(participationController.getHackathonsOfEmployee)
-   
+
+    router
+    .route("/organizer/:employeeId")
+    .get(participationController.getHackathonsOfOrganizer)   
 
 module.exports=router;

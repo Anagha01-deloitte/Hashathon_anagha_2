@@ -1,4 +1,5 @@
 const Participation = require("../models/Participation");
+const Hackathon = require("../models/Hackathon");
 
 exports.createParticipation = async (body) =>{
 
@@ -7,6 +8,11 @@ exports.createParticipation = async (body) =>{
     //check deadline
     if(hackathon.registrationEndDate < new Date()){
         return {error:"Registraton date has passed"}
+    }
+
+    //check if registration has started
+    if(hackathon.registrationStartDate > new Date()){
+        return {error:`Registration are going to be starting on ${hackathon.registrationStartDate}`,}
     }
 
     //check if skills match
@@ -104,6 +110,16 @@ exports.getHackathonsOfEmployee = async (params) =>{
         })
 
         return {totalHackathonsParticipated:hackathons.length, hackathons}
+    }catch(err){
+        return {error:err}
+    }
+}
+
+exports.getHackathonsOfOrganizer = async (params) =>{
+    try {
+        const hackathons = await Hackathon.find({"organizer._id":params.employeeId});
+
+        return {totalHackathonsOrganized:hackathons.length, hackathons}
     }catch(err){
         return {error:err}
     }
