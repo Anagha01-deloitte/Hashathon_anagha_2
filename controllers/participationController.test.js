@@ -6,7 +6,6 @@ jest.mock("../service/participationService");
 describe("Participation Controller", () => {
   describe("GET /participants", () => {
     it("should return a list of all participants", async () => {
-      // Mock the implementation of getAllParticipantsService
       const mockParticipants = [
         { _id: "participant1", name: "Participant A" },
         { _id: "participant2", name: "Participant B" },
@@ -30,7 +29,6 @@ describe("Participation Controller", () => {
     });
 
     it("should return 400 if there is an error in the result", async () => {
-      // Mock the implementation of getAllParticipantsService to return an error
       const mockError = "Error fetching participants";
       participationService.getAllParticipantsService.mockResolvedValue({ error: mockError });
 
@@ -53,7 +51,6 @@ describe("Participation Controller", () => {
 
   describe("POST /participants", () => {
     it("should create a new participation", async () => {
-      // Mock the implementation of createParticipationService
       const mockNewParticipation = { _id: "new_participation", name: "New Participation" };
       participationService.createParticipationService.mockResolvedValue(mockNewParticipation);
 
@@ -74,7 +71,6 @@ describe("Participation Controller", () => {
     });
 
     it("should return 400 if there is an error in the result", async () => {
-      // Mock the implementation of createParticipationService to return an error
       const mockError = "Error creating participation";
       participationService.createParticipationService.mockResolvedValue({ error: mockError });
 
@@ -97,7 +93,6 @@ describe("Participation Controller", () => {
 
   describe("GET /participants/:hackathonId", () => {
     it("should return a list of participants for a specific hackathon", async () => {
-      // Mock the implementation of getParticipantsOfHackathonService
       const mockParticipants = [
         { _id: "participant1", name: "Participant A" },
         { _id: "participant2", name: "Participant B" },
@@ -124,7 +119,6 @@ describe("Participation Controller", () => {
     });
 
     it("should return 400 if there is an error in the result", async () => {
-      // Mock the implementation of getParticipantsOfHackathonService to return an error
       const mockError = "Error fetching participants of hackathon";
       participationService.getParticipantsOfHackathonService.mockResolvedValue({
         error: mockError,
@@ -151,7 +145,6 @@ describe("Participation Controller", () => {
 
   describe("GET /participants/employee/:employeeId", () => {
     it("should return a list of hackathons for a specific employee", async () => {
-      // Mock the implementation of getHackathonsOfEmployeeService
       const mockHackathons = [
         { _id: "hackathon1", name: "Hackathon A" },
         { _id: "hackathon2", name: "Hackathon B" },
@@ -178,7 +171,6 @@ describe("Participation Controller", () => {
     });
 
     it("should return 400 if there is an error in the result", async () => {
-      // Mock the implementation of getHackathonsOfEmployeeService to return an error
       const mockError = "Error fetching hackathons of employee";
       participationService.getHackathonsOfEmployeeService.mockResolvedValue({
         error: mockError,
@@ -205,7 +197,6 @@ describe("Participation Controller", () => {
 
   describe("GET /participants/organizer/:organizerId", () => {
     it("should return a list of hackathons for a specific organizer", async () => {
-      // Mock the implementation of getHackathonsOfOrganizerService
       const mockHackathons = [
         { _id: "hackathon1", name: "Hackathon A" },
         { _id: "hackathon2", name: "Hackathon B" },
@@ -232,7 +223,6 @@ describe("Participation Controller", () => {
     });
 
     it("should return 400 if there is an error in the result", async () => {
-      // Mock the implementation of getHackathonsOfOrganizerService to return an error
       const mockError = "Error fetching hackathons of organizer";
       participationService.getHackathonsOfOrganizerService.mockResolvedValue({
         error: mockError,
