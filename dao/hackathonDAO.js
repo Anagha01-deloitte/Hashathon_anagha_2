@@ -20,6 +20,7 @@ exports.createHackathon = async (body) =>{
             organizer, maxSlots, description, techStack, experienceLevel
         });
     }catch(err){
+        console.log(err);
         return err;
     }
 
@@ -36,7 +37,7 @@ exports.getAllHackathons = async() =>{
                  hackathon= hackathon._doc
                 return {...hackathon,status:"Upcoming"}
             }
-            else if(hackathon.registrationStartDate < new Date() && hackathon.registrationEndDate> new Date())
+            else if(hackathon.registrationStartDate <= new Date() && hackathon.registrationEndDate> new Date())
             {   
                 hackathon= {...hackathon}
                  hackathon= hackathon._doc
@@ -53,6 +54,7 @@ exports.getAllHackathons = async() =>{
         
 
     }catch(err){
+        console.log(err)
         return {error:err};
     }
 }

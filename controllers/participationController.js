@@ -51,3 +51,19 @@ exports.getParticipantsOfHackathon = async (req,res) =>{
         data:result
     })
 } 
+
+exports.getHackathonsOfEmployee = async (req,res) =>{
+    const result = await participationService.getHackathonsOfEmployeeService(req.params);
+
+    if(result.error){
+        return res.status(400).json({
+            status:"Failed",
+            error:result.error
+        })
+    }
+
+    return res.status(200).json({
+        status:"Success",
+        data:result
+    })
+}

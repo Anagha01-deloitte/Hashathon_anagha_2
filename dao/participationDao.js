@@ -94,3 +94,17 @@ exports.getParticipantsOfHackathon = async (params) =>{
         return {error:err};
     }
 }
+
+exports.getHackathonsOfEmployee = async (params) =>{
+    try {
+        const participations = await Participation.find({"participant._id":params.employeeId});
+
+        const hackathons = participations.map((participation)=>{
+            return participation.hackathon;
+        })
+
+        return {totalHackathonsParticipated:hackathons.length, hackathons}
+    }catch(err){
+        return {error:err}
+    }
+}

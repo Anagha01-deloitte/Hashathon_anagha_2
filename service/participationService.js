@@ -11,7 +11,7 @@ exports.createParticipationService = async (body) => {
     }
     const participant = await employeeDao.getEmployee({_id:employeeId});
 
-    if(participant.error){
+    if(!participant){
         return {error:"Employee with that ID doesn't exist"}
     }
 
@@ -29,4 +29,8 @@ exports.getAllParticipantsService = async () =>{
 
 exports.getParticipantsOfHackathonService = async(params) =>{
     return await participationDao.getParticipantsOfHackathon(params)
+}
+
+exports.getHackathonsOfEmployeeService = async (params) =>{
+    return await participationDao.getHackathonsOfEmployee(params)
 }

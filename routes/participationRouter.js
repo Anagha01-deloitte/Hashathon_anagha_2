@@ -11,6 +11,10 @@ router
     router
     .route("/hackathon/:hackathonId")
     .get(participationController.getParticipantsOfHackathon)
+
+    router
+    .route("/employee/:employeeId")
+    .get(participationController.getHackathonsOfEmployee)
    
 
 module.exports=router;
