@@ -3,8 +3,7 @@ const Participation = require("../models/Participation");
 exports.createParticipation = async (body) =>{
 
     let {participant, hackathon, techStack, experienceLevel} = body;
-
-    const registrationDate = new Date();
+    
     //check deadline
     if(hackathon.registrationEndDate < new Date()){
         return {error:"Registraton date has passed"}
