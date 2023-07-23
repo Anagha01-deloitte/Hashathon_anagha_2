@@ -22,3 +22,7 @@ exports.updateEmployeeService = async (params, body) =>{
  exports.deleteEmployeeService = async (params) =>{
     return await employeeDao.deleteEmployee(params);
  }
+
+ exports.employeePaginationService = async (query) =>{
+    return await employeeDao.employeePagination(query);
+ }

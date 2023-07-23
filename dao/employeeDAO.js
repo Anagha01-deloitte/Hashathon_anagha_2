@@ -26,3 +26,9 @@ exports.getEmployee = async (params) =>{
 exports.deleteEmployee = async (params) =>{
     return await Employee.findOneAndDelete(params);
 }
+
+exports.employeePagination = async (query) =>{
+    //same url: http://localhost:3000/api/v1/employee/?limit=2&page=1
+    const data = await Employee.find().limit(query.limit*1).skip(query.page-1).exec();
+    return {data,page:query.page,NumberOfRecords:query.limit}
+}

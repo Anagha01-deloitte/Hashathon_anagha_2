@@ -1,13 +1,18 @@
 const Participation = require("../models/Participation");
+const Hackathon = require("../models/Hackathon");
+const hackathonDao=require("./hackathonDAO")
 
 exports.createParticipation = async (body) =>{
-
     let {participant, hackathon, techStack, experienceLevel} = body;
 
-    const registrationDate = new Date();
     //check deadline
-    if(hackathon.registrationEndDate < new Date()){
+    if(new Date(hackathon.registrationEndDate).toDateString()< new Date().toDateString()){
         return {error:"Registraton date has passed"}
+    }
+
+    //check if registration has started
+    if(new Date(hackathon.registrationStartDate).toDateString() > new Date().toDateString()){
+        return {error:`Registrations are going to be starting on ${hackathon.registrationStartDate}`,}
     }
 
     //check if skills match
@@ -62,8 +67,10 @@ exports.createParticipation = async (body) =>{
     
 
     try {
+        const slotsRemaining=hackathon.slotsRemaining-1
+        await hackathonDao.updateHackathon({_id:hackathon._id},{slotsRemaining});
         return await Participation.create({
-            participant, hackathon, techStack, experienceLevel
+            participant, hackathon:{...hackathon,slotsRemaining}, techStack, experienceLevel
         })
 
     }catch(err){
@@ -78,5 +85,44 @@ exports.getAllParticipations = async () =>{
 
     }catch(err){
         return {error:err};
+    }
+}
+
+exports.getParticipantsOfHackathon = async (params) =>{
+    try {
+        const participations = await Participation.find({"hackathon._id":params.hackathonId});
+
+        const participants = participations.map((participation)=>{
+            return participation.participant;
+        })
+
+        return {totalParticipants: participants.length,participants};
+
+    }catch(err){
+        return {error:err};
+    }
+}
+
+exports.getHackathonsOfEmployee = async (params) =>{
+    try {
+        const participations = await Participation.find({"participant._id":params.employeeId});
+
+        const hackathons = participations.map((participation)=>{
+            return participation.hackathon;
+        })
+
+        return {totalHackathonsParticipated:hackathons.length, hackathons}
+    }catch(err){
+        return {error:err}
+    }
+}
+
+exports.getHackathonsOfOrganizer = async (params) =>{
+    try {
+        const hackathons = await Hackathon.find({"organizer._id":params.employeeId});
+
+        return {totalHackathonsOrganized:hackathons.length, hackathons}
+    }catch(err){
+        return {error:err}
     }
 }
